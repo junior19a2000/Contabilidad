@@ -64,7 +64,8 @@ hide_streamlit_style = """
             </style>
             """
 st.markdown(hide_streamlit_style, unsafe_allow_html = True)
-st.markdown("<h1 style='text-align: center; color: white;'>💰 Registro Financiero</h1>", unsafe_allow_html = True,)
+st.markdown("<h1 style='text-align: center; color: white;'>💰 Registro Financiero</h1>", unsafe_allow_html = True)
+password = st.secrets["password"]
 
 if 'client' not in st.session_state:
     try:
@@ -88,7 +89,7 @@ if 'client' in st.session_state:
         data_editor1 = st.data_editor(content, hide_index = True, num_rows = "dynamic", use_container_width = True)
         form_submit_button1 = st.form_submit_button('Actualizar registro contable', use_container_width = True)
         if form_submit_button1:
-            if contraseña == 'junior19':
+            if contraseña == password:
                 content = data_editor1
                 content['DIA'] = content['DIA'].apply(lambda x: str(x))
                 content = [content.columns.values.tolist()] + content.values.tolist()
@@ -153,7 +154,7 @@ for i in range(len(data6)):
     axe.text(data6[i], -5 * data5.min(), f"${data1['FECHAS'].iat[i]}$", horizontalalignment = 'center', rotation = 90)
     axe.plot([data6[i], data6[i]], [data5.min(), data5.max()], color = "black", linestyle = 'dotted', linewidth = 1, alpha = 1.0)
 axe.set_frame_on(False)
-if contraseña == 'junior19':
+if contraseña == password:
     axe.tick_params(axis = 'y', colors = 'white')
 else:
     axe.set_yticks([])
@@ -167,6 +168,6 @@ elif data5.iat[-1] == data5.iat[0]:
 else:
     msg = 'Tu capital se ha disminuido en ' + str(round(data5.iat[-1] / data5.iat[0], 1)) + ' veces, en ' + str(len(data6)) + ' meses'
 color = 'white'
-if contraseña == 'junior19':
+if contraseña == password:
     st.markdown(f'<marquee style="font-size: 50px; width: 100%; color: {color}" scrollamount="20"><b>{msg}</b></marquee>', unsafe_allow_html = True)
     st.toast('Tu capital actual es de ' + str(round(data5.iat[-1], 2)) + ' soles')
